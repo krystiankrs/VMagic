@@ -11,6 +11,7 @@ Vagrant.configure("2") do |config|
     ubuntu.vm.network "private_network", ip: "192.168.56.10"
 
     ubuntu.vm.synced_folder "./shared", "/home/vagrant/shared"
+    ubuntu.vm.synced_folder "./tests", "/home/vagrant/tests"
     ubuntu.vm.provider "virtualbox" do |vb|
       vb.memory = "1024"
       vb.cpus = 2
@@ -27,6 +28,7 @@ Vagrant.configure("2") do |config|
     centos.vm.network "private_network", ip: "192.168.56.11"
 
     centos.vm.synced_folder "./shared", "/home/vagrant/shared"
+    centos.vm.synced_folder "./tests", "/home/vagrant/tests"
     centos.vm.provider "virtualbox" do |vb|
       vb.memory = "1024"
       vb.cpus = 2
@@ -43,6 +45,7 @@ config.vm.define "opensuse" do |opensuse|
     opensuse.vm.network "private_network", ip: "192.168.56.12"
 
     opensuse.vm.synced_folder "./shared", "/home/vagrant/shared"
+    opensuse.vm.synced_folder "./tests", "/home/vagrant/tests"
     opensuse.vm.provider "virtualbox" do |vb|
       vb.memory = "1024"
       vb.cpus = 2
