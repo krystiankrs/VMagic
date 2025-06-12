@@ -8,7 +8,6 @@ Vagrant.configure("2") do |config|
     ubuntu.vm.box = "ubuntu/jammy64"
     ubuntu.vm.hostname = "ubuntu-vm"
 
-    # Ustaw statyczny prywatny adres IP
     ubuntu.vm.network "private_network", ip: "192.168.56.10"
 
     ubuntu.vm.synced_folder "./shared", "/home/vagrant/shared"
@@ -22,7 +21,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "centos" do |centos|
-    centos.vm.box = "centos/7"
+    centos.vm.box = "generic/centos8"
     centos.vm.hostname = "centos-vm"
 
     centos.vm.network "private_network", ip: "192.168.56.11"
@@ -37,19 +36,19 @@ Vagrant.configure("2") do |config|
     SHELL
   end
 
-  config.vm.define "rocky" do |rocky|
-    rocky.vm.box = "rockylinux/8"
-    rocky.vm.hostname = "rocky-vm"
+config.vm.define "opensuse" do |opensuse|
+    opensuse.vm.box = "generic/opensuse42"
+    opensuse.vm.hostname = "opensuse-vm"
 
-    rocky.vm.network "private_network", ip: "192.168.56.12"
+    opensuse.vm.network "private_network", ip: "192.168.56.12"
 
-    rocky.vm.synced_folder "./shared", "/home/vagrant/shared"
-    rocky.vm.provider "virtualbox" do |vb|
+    opensuse.vm.synced_folder "./shared", "/home/vagrant/shared"
+    opensuse.vm.provider "virtualbox" do |vb|
       vb.memory = "1024"
       vb.cpus = 2
     end
-    rocky.vm.provision "shell", inline: <<-SHELL
-      echo "Rocky Linux VM uruchomiona!"
+    opensuse.vm.provision "shell", inline: <<-SHELL
+      echo "openSUSE VM uruchomiona!"
     SHELL
   end
 
