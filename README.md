@@ -10,7 +10,7 @@ VMagic to projekt mający na celu stworzenie automatyzowanego środowiska wirtua
 
 - **Vagrant** – zarządzanie maszynami wirtualnymi
 - **VirtualBox** – provider maszyn wirtualnych
-- **Ansible** – automatyzacja konfiguracji (w kolejnych sprintach)
+- **Ansible** – automatyzacja konfiguracji
 - **Git i GitHub** – kontrola wersji i zdalne repozytorium
 
 ---
