@@ -38,8 +38,8 @@ Vagrant.configure("2") do |config|
     SHELL
   end
 
-config.vm.define "opensuse" do |opensuse|
-    opensuse.vm.box = "generic/opensuse42"
+  config.vm.define "opensuse" do |opensuse|
+    opensuse.vm.box = "opensuse/Leap-15.2.x86_64"
     opensuse.vm.hostname = "opensuse-vm"
 
     opensuse.vm.network "private_network", ip: "192.168.56.12"
@@ -54,6 +54,13 @@ config.vm.define "opensuse" do |opensuse|
       echo "openSUSE VM uruchomiona!"
     SHELL
   end
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "ansible/apache.yml"
+    ansible.inventory_path = "ansible/inventory"
+    ansible.compatibility_mode = "2.0"  # opcjonalnie, czasem pomaga
+  end
+
 
 end
 

@@ -1,0 +1,9 @@
+---
+- name: Konfiguracja użytkownika z rolami i aplikacją sieciową Apache
+  hosts: web
+  become: true
+  roles:
+    - packages
+    - firewall
+    - users
+    - webapp

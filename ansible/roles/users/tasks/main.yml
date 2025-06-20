@@ -1,0 +1,28 @@
+---
+- name: Tworzenie użytkownika dev (Debian/Ubuntu)
+  user:
+    name: dev
+    shell: /bin/bash
+    groups: sudo
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Tworzenie użytkownika dev (CentOS)
+  user:
+    name: dev
+    groups: wheel
+    append: yes
+  when: ansible_distribution == "CentOS"
+
+- name: Tworzenie użytkownika dev (openSUSE)
+  user:
+    name: dev
+    groups: users
+    append: yes
+  when: ansible_distribution == "openSUSE Leap"
+
+- name: Ustawienie hasła dla dev
+  user:
+    name: dev
+    password: "{{ 'devpassword' | password_hash('sha512') }}"
+

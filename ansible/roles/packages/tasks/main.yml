@@ -1,0 +1,36 @@
+---
+- name: Instalacja podstawowych pakietów na Debian/Ubuntu
+  apt:
+    name:
+      - apache2
+      - git
+      - curl
+      - htop
+      - python3-pip
+    state: present
+    update_cache: yes
+  when: ansible_os_family == "Debian"
+
+- name: Instalacja podstawowych pakietów na CentOS
+  yum:
+    name:
+      - httpd
+      - git
+      - curl
+      - htop
+      - python3-pip
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Instalacja podstawowych pakietów na openSUSE
+  zypper:
+    name:
+      - firewalld
+      - apache2
+      - git
+      - curl
+      - htop
+      - python3-pip
+    state: present
+  when: ansible_distribution == "openSUSE Leap"
+

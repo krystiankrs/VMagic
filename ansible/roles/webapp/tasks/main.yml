@@ -1,0 +1,122 @@
+---
+- name: Utworzenie katalogu na aplikację (Debian)
+  file:
+    path: /var/www/myapp
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: '0755'
+  when: ansible_os_family == "Debian"
+
+- name: Utworzenie katalogu na aplikację (CentOS)
+  file:
+    path: /var/www/myapp
+    state: directory
+    owner: apache
+    group: apache
+    mode: '0755'
+  when: ansible_distribution == "CentOS"
+
+- name: Utworzenie katalogu na aplikację (openSUSE)
+  file:
+    path: /var/www/myapp
+    state: directory
+    owner: wwwrun
+    group: www
+    mode: '0755'
+  when: ansible_os_family == "Suse"
+
+- name: Dodanie przykładowego pliku index.html (Debian)
+  copy:
+    content: "<h1>Witamy w aplikacji VMagic WebApp!</h1>"
+    dest: /var/www/myapp/index.html
+    owner: www-data
+    group: www-data
+    mode: '0644'
+  when: ansible_os_family == "Debian"
+
+- name: Dodanie przykładowego pliku index.html (CentOS)
+  copy:
+    content: "<h1>Witamy w aplikacji VMagic WebApp!</h1>"
+    dest: /var/www/myapp/index.html
+    owner: apache
+    group: apache
+    mode: '0644'
+  when: ansible_distribution == "CentOS"
+  
+- name: Dodanie przykładowego pliku index.html (openSUSE)
+  copy:
+    content: "<h1>Witamy w aplikacji VMagic WebApp!</h1>"
+    dest: /var/www/myapp/index.html
+    owner: wwwrun
+    group: www
+    mode: '0644'
+  when: ansible_distribution == "openSUSE Leap"
+
+- name: Konfiguracja Apache dla aplikacji (Debian)
+  copy:
+    dest: /etc/apache2/sites-available/myapp.conf
+    content: |
+      <VirtualHost *:80>
+          ServerAdmin webmaster@localhost
+          DocumentRoot /var/www/myapp
+          ErrorLog ${APACHE_LOG_DIR}/error.log
+          CustomLog ${APACHE_LOG_DIR}/access.log combined
+      </VirtualHost>
+  when: ansible_os_family == "Debian"
+
+- name: Włączenie strony myapp (Debian)
+  command: a2ensite myapp.conf
+  notify: Restart Apache
+  when: ansible_os_family == "Debian"
+
+- name: Wyłączenie domyślnej strony (Debian)
+  command: a2dissite 000-default.conf
+  notify: Restart Apache
+  when: ansible_os_family == "Debian"
+
+- name: Konfiguracja Apache dla aplikacji (CentOS)
+  copy:
+    dest: /etc/httpd/conf.d/myapp.conf
+    content: |
+      <VirtualHost *:80>
+          ServerAdmin webmaster@localhost
+          DocumentRoot /var/www/myapp
+          ErrorLog /var/log/httpd/error.log
+          CustomLog /var/log/httpd/access.log combined
+      </VirtualHost>
+  when: ansible_distribution == "CentOS"
+
+- name: Włącz i restartuj httpd (CentOS)
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes
+  when: ansible_distribution == "CentOS"
+  
+- name: Konfiguracja Apache dla aplikacji (openSUSE)
+  copy:
+    dest: /etc/apache2/vhosts.d/myapp.conf
+    content: |
+      <VirtualHost *:80>
+          DocumentRoot /var/www/myapp
+
+          <Directory /var/www/myapp>
+              Options Indexes FollowSymLinks
+              AllowOverride None
+              Require all granted
+          </Directory>
+
+          ErrorLog /var/log/apache2/error.log
+          CustomLog /var/log/apache2/access.log combined
+      </VirtualHost>
+  when: ansible_distribution == "openSUSE Leap"
+  
+- name: Włącz i restartuj Apache (openSUSE)
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes
+  when: ansible_distribution == "openSUSE Leap"
+
+
